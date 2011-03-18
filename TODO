@@ -1,2 +1,3 @@
-- Handle network errors
+- Disable window.location changes on browser
+- Handle network errors (in a better way than just a 500 error)
 - Unit tests
