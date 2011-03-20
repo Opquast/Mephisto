@@ -1,3 +1,4 @@
 - Disable window.location changes on browser
 - Handle network errors (in a better way than just a 500 error)
-- Unit tests
+- Handle resource eating pages
+- Debug on screenshots
