@@ -38,13 +38,13 @@
 const {extend} = require("utils");
 const main = require("main");
 const preferences = require("preferences-service");
-const test_server = require("./httpd-tests");
+const {register_data_dir} = require("views");
 
 // Starting main program
 server = main.main();
 
 // Adding tests handler
-test_server.register_test_dir(server, '/tests/', 'tests');
+register_data_dir(server, '/tests/', 'tests');
 
 const server_host = preferences.get('extensions.mephisto.serverHost');
 const server_port = preferences.get('extensions.mephisto.serverPort');
