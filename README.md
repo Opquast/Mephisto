@@ -76,7 +76,7 @@ Add-on SDK](https://jetpack.mozillalabs.com/) and clone this repository
 somewhere you can use it.
 
 To create a new view, open the file **lib/views.js** and add a property to the
-object named **exports.views**. You property name is the path of your new
+object named **exports.loaders**. You property name is the path of your new
 view and its content is an object containing the following optional callbacks:
 
 - **onInit()**: If you need to add some property to your object before
