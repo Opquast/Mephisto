@@ -1,6 +1,6 @@
 # Mephisto
 
-Mephisto is a Mozilla Firefox add-on that adds an HTTP server inside your
+Mephisto is a Mozilla Firefox 4 Add-On that adds an HTTP server inside your
 browser. This server is able to open webpages and returns content information
 or screenshots.
 
@@ -15,6 +15,34 @@ a terrible mess.
 - Send DOM content after page load;
 - Take screenshot;
 - Send page and resources report.
+
+## Install Mephisto
+
+### XPI Release
+
+You can download an XPI package on the [project download
+page](https://github.com/Temesis/Mephisto/archives/master).
+
+To install it manually, create a folder called **mephisto@temesis.com** in
+your Firefox profile and unzip XPI contents into this folder.
+
+### Git branch with Mozilla Add-On SDK
+
+First you'll have to install the [Mozilla
+Add-on SDK](https://jetpack.mozillalabs.com/) and clone this repository
+somewhere in your SDK environnement.
+
+Then, perform `cfx xpi` to create an XPI package.
+
+### Configuration
+
+In your **user.js** file, you can add the following settings:
+
+- **extensions.mephisto.serverHost**: HTTP server hostname (default localhost);
+- **extensions.mephisto.serverPort**: Port server port (default 8000);
+
+**Warning**: You can't set "0.0.0.0" as a hostname. You should set the real
+hostname the server will listen on.
 
 ## Views
 
