@@ -39,7 +39,7 @@ Then, perform `cfx xpi` to create an XPI package.
 In your **user.js** file, you can add the following settings:
 
 - **extensions.mephisto.serverHost**: HTTP server hostname (default localhost);
-- **extensions.mephisto.serverPort**: Port server port (default 8000);
+- **extensions.mephisto.serverPort**: HTTP server port (default 8000);
 
 **Warning**: You can't set "0.0.0.0" as a hostname. You should set the real
 hostname the server will listen on.
