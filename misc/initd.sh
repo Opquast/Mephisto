@@ -10,9 +10,9 @@
 
 set -e
 
-USER="mephisto"
-PROFILE_DIR="/srv/mephisto/profile"
-
+USER="nobody"
+PROFILE_DIR="/srv/mephisto"
+LOGFILE="/var/log/mephisto/access.log"
 FIREFOX="/usr/bin/firefox-4.0"
 
 test -f /etc/default/mephisto && . /etc/default/mephisto
@@ -20,31 +20,32 @@ test -f /etc/default/mephisto && . /etc/default/mephisto
 FIREFOX_OPTIONS=" -profile $PROFILE_DIR -quiet"
 
 start() {
-        echo "Starting Mephisto"
-        test -f $PROFILE_DIR/extensions.sqlite && /bin/rm $PROFILE_DIR/extensions.sqlite
-        xvfb-run start-stop-daemon --start -b --user $USER --chuid $USER --startas $FIREFOX -- $FIREFOX_OPTIONS
+    echo "Starting Mephisto"
+    test -f $PROFILE_DIR/extensions.sqlite && /bin/rm $PROFILE_DIR/extensions.sqlite
+    su $USER -c "xvfb-run $FIREFOX $FIREFOX_OPTIONS 2>&1 1>>$LOGFILE &"
 }
 
 stop() {
-        echo "Stopping Mephisto"
-        start-stop-daemon --stop --user $USER --chuid $USER --startas $FIREFOX -- $FIREFOX_OPTIONS
+    echo "Stopping Mephisto"
+    pkill -15 -u $USER `basename $FIREFOX`
 }
 
 
 case "$1" in
-        start)
-                start
-                ;;
-        stop)
-                stop
-                ;;
-        reload|restart)
-                stop
-                start
-                ;;
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    reload|restart)
+        stop
+        sleep 2
+        start
+        ;;
     *)
-                echo $"Usage: $0 {start|stop|reload|restart}"
-                exit 1
+        echo $"Usage: $0 {start|stop|reload|restart}"
+        exit 1
 esac
 
 exit 0
