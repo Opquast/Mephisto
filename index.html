@@ -1,77 +1,86 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
 
-  <title>Temesis/Mephisto @ GitHub</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #ffffff;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #000000; }
-    h3 { text-align: center; color: #000000; }
-    a { color: #000000; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mephisto &mdash; Mephisto v0.2 documentation</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Mephisto v0.2 documentation" href="#" />
+    <link rel="next" title="Mephisto Installation" href="install.html" />
+<link rel="stylesheet" href="_static/screen.css" type="text/css" />
 
-<body>
-  <a href="http://github.com/Temesis/Mephisto"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/Temesis/Mephisto/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/Temesis/Mephisto/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/Temesis/Mephisto">Mephisto</a>
-      <span class="small">by <a href="http://github.com/Temesis">Temesis</a></span></h1>
-
-    <div class="description">
-      Testing HTTP Server, Firefox Add-On
-    </div>
-
-    <h2>Authors</h2>
-<p>Olivier Meunier (olivier.meunier@temesis.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p> (olivier.meunier+github@temesis.com)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/Temesis/Mephisto/zipball/master">zip</a> or
-      <a href="http://github.com/Temesis/Mephisto/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/Temesis/Mephisto</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/Temesis/Mephisto">Temesis/Mephisto</a>
-    </div>
-
-  </div>
+  </head>
+  <body>
+<div id="header">
+<ul>
+  <li class="main"><a href="#">Mephisto</a></li>
+  <li><a href="install.html">Install</a></li>
+  <li><a href="usage.html">Use</a></li>
+  <li><a href="hack.html">Hack</a></li>
+  <li><a href="credits.html">Credits</a></li>
+  <li><a href="https://github.com/Temesis/Mephisto">Code</a></li>
+</ul>
+</div>
 
   
-</body>
+    <div id="content">
+      
+  <div class="section" id="mephisto">
+<h1>Mephisto<a class="headerlink" href="#mephisto" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="about">
+<h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
+<p>Mephisto is a Mozilla Firefox 4 Add-On that adds an HTTP server inside your browser.</p>
+<p>This server is able to open a webpage on the browser and returns content
+information or a screenshot.</p>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Return DOM as a human user will get it;</li>
+<li>Return content information as JSON;</li>
+<li>Modify DOM and/or results with external scripts;</li>
+<li>Take screenshots.</li>
+</ul>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Mephisto Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Mephisto Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hack.html">Mephisto Hacking</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+    </div>
+  
+
+<div id="footer">
+<p>Mephisto, a project backed by <a href="http://www.temesis.com/">Temesis</a>
+and hosted on <a href="https://github.com/Temesis/Mephisto">GitHub</a>.</p>
+<p>Site Content License <a rel="license"
+href="http://creativecommons.org/licenses/by/3.0/">Creative Commons
+Attribution 3.0 Unported License</a>.</p>
+</div>
+
+  </body>
 </html>
