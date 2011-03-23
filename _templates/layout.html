@@ -1,0 +1,35 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{{ pathto('_static/screen.css', 1) }}" type="text/css" />
+{% endblock %}
+
+{%- block relbar1 %}{% endblock %}
+{%- block relbar2 %}{% endblock %}
+
+{% block header %}
+<div id="header">
+<ul>
+  <li class="main"><a href="{{ pathto('index') }}">Mephisto</a></li>
+  <li><a href="{{ pathto('install') }}">Install</a></li>
+  <li><a href="{{ pathto('usage') }}">Use</a></li>
+  <li><a href="{{ pathto('hack') }}">Hack</a></li>
+</ul>
+</div>
+{% endblock %}
+
+{% block content %}
+  {% block document %}
+    <div id="content">
+      {% block body %} {% endblock %}
+    </div>
+  {% endblock %}
+{% endblock %}
+
+
+{% block footer %}
+<div id="footer">
+Mephisto, a project backed by <a href="http://www.temesis.com/">Temesis</a>
+and hosted on <a href="https://github.com/Temesis/Mephisto">GitHub</a>.
+</div>
+{% endblock %}
