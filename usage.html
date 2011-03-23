@@ -1,0 +1,176 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mephisto Usage &mdash; Mephisto v0.2 documentation</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Mephisto v0.2 documentation" href="index.html" />
+    <link rel="next" title="Mephisto Hacking" href="hack.html" />
+    <link rel="prev" title="Mephisto Installation" href="install.html" />
+<link rel="stylesheet" href="_static/screen.css" type="text/css" />
+
+  </head>
+  <body>
+<div id="header">
+<ul>
+  <li class="main"><a href="index.html">Mephisto</a></li>
+  <li><a href="install.html">Install</a></li>
+  <li><a href="#">Use</a></li>
+  <li><a href="hack.html">Hack</a></li>
+  <li><a href="credits.html">Credits</a></li>
+  <li><a href="https://github.com/Temesis/Mephisto">Code</a></li>
+</ul>
+</div>
+
+  
+    <div id="content">
+      
+  <div class="section" id="mephisto-usage">
+<h1>Mephisto Usage<a class="headerlink" href="#mephisto-usage" title="Permalink to this headline">¶</a></h1>
+<p>Being an HTTP server, you ask content to Mephisto with HTTP. Here are the
+implemented resources:</p>
+<div class="section" id="retrieve-dom-content">
+<h2>Retrieve DOM content<a class="headerlink" href="#retrieve-dom-content" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt>
+<tt class="descname">/</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> &#8211; Document URL</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>This endpoint returns a text/plain response containing the HTML representation
+of the main document object of the page. This is not the same thing as the raw
+HTML source but I think you get the point.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>curl http://localhost:8000/?url=http://google.com/</pre>
+</div>
+</div>
+<div class="section" id="full-report">
+<h2>Full report<a class="headerlink" href="#full-report" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt>
+<tt class="descname">/dump</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; Document URL</li>
+<li><strong>modifier</strong> &#8211; JavaScript modifier path</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>This endpoint returns a JSON response containing an object with the following
+elements:</p>
+<ul class="simple">
+<li><strong>dom</strong>: DOM dump string</li>
+<li><strong>resources</strong>: List of all resources loaded with the page.</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python"><pre>curl http://localhost:8000/dump?url=http://google.com/</pre>
+</div>
+<div class="section" id="modifiers">
+<h3>Modifiers<a class="headerlink" href="#modifiers" title="Permalink to this headline">¶</a></h3>
+<p>This endpoint accepts another parameter name <tt class="docutils literal"><span class="pre">modifier</span></tt>. A modifier is a
+path to a script located in the <tt class="file docutils literal"><span class="pre">data</span></tt> folder of the extension. The
+script is executed after page load as if it was its own script. Then it can
+modify the page or return a result. If a script returns a result it will be
+merged with with response.</p>
+<p>A return result should be wrapped in a function to return a result. The
+following example add an element named <tt class="docutils literal"><span class="pre">test</span></tt> to result object:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;test&#39;</span><span class="o">:</span> <span class="s1">&#39;test&#39;</span>
+    <span class="p">};</span>
+<span class="p">})();</span>
+</pre></div>
+</div>
+<p>You can add many <tt class="docutils literal"><span class="pre">modifier</span></tt> arguments to your query string. Example:</p>
+<div class="highlight-python"><pre>curl http://localhost:8000/dump?url=http://google.com/\
+&amp;modifier=jquery-1.5-min.js&amp;modifier=extractor.js</pre>
+</div>
+<p>This query load the built-in modifiers <tt class="docutils literal"><span class="pre">jquery-1.5-min.js</span></tt> and
+<tt class="docutils literal"><span class="pre">extractor.js</span></tt> which will add many more information to response.</p>
+</div>
+</div>
+<div class="section" id="screenshot">
+<h2>Screenshot<a class="headerlink" href="#screenshot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt>
+<tt class="descname">/screenshot</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; Document URL</li>
+<li><strong>w</strong> &#8211; Screenshot width (default 1024)</li>
+<li><strong>h</strong> &#8211; Screenshot height (default 700)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>This endpoint returns a screenshot as a image/png response.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not fully stable at the moment. Actually it could
+block your client which is, indeed, a bad behavior.</p>
+</div>
+</div>
+<div class="section" id="monitoring">
+<h2>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt>
+<tt class="descname">/monitor</tt></dt>
+<dd></dd></dl>
+
+<p>This endpoint returns some useful information to monitor your server. It sends
+a text/plain response or a JSON one if you add an <tt class="docutils literal"><span class="pre">Accept:</span> <span class="pre">application/json</span></tt>
+header to your request.</p>
+</div>
+</div>
+
+
+    </div>
+  
+
+<div id="footer">
+<p>Mephisto, a project backed by <a href="http://www.temesis.com/">Temesis</a>
+and hosted on <a href="https://github.com/Temesis/Mephisto">GitHub</a>.</p>
+<p>Site Content License <a rel="license"
+href="http://creativecommons.org/licenses/by/3.0/">Creative Commons
+Attribution 3.0 Unported License</a>.</p>
+</div>
+
+  </body>
+</html>

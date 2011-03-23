@@ -1,0 +1,118 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mephisto Installation &mdash; Mephisto v0.2 documentation</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Mephisto v0.2 documentation" href="index.html" />
+    <link rel="next" title="Mephisto Usage" href="usage.html" />
+    <link rel="prev" title="Mephisto" href="index.html" />
+<link rel="stylesheet" href="_static/screen.css" type="text/css" />
+
+  </head>
+  <body>
+<div id="header">
+<ul>
+  <li class="main"><a href="index.html">Mephisto</a></li>
+  <li><a href="#">Install</a></li>
+  <li><a href="usage.html">Use</a></li>
+  <li><a href="hack.html">Hack</a></li>
+  <li><a href="credits.html">Credits</a></li>
+  <li><a href="https://github.com/Temesis/Mephisto">Code</a></li>
+</ul>
+</div>
+
+  
+    <div id="content">
+      
+  <div class="section" id="mephisto-installation">
+<h1>Mephisto Installation<a class="headerlink" href="#mephisto-installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="get-an-xpi-package">
+<h2>Get an XPI package<a class="headerlink" href="#get-an-xpi-package" title="Permalink to this headline">¶</a></h2>
+<p>If you don&#8217;t want to build your own XPI package, download the most recent
+package from GitHub on:</p>
+<p><a class="reference external" href="https://github.com/Temesis/Mephisto/archives/master">https://github.com/Temesis/Mephisto/archives/master</a></p>
+</div>
+<div class="section" id="make-your-own-package">
+<h2>Make your own package<a class="headerlink" href="#make-your-own-package" title="Permalink to this headline">¶</a></h2>
+<p>If you prefer or need to build your own XPI package, you first need to install
+the <a class="reference external" href="https://jetpack.mozillalabs.com/">Firefox Add-On SDK</a> and clone the
+Mephisto repository in a folder inside your SDK installation.</p>
+<p>Mephisto repository can be found on:
+<tt class="docutils literal"><span class="pre">git://github.com/Temesis/Mephisto.git</span></tt></p>
+<p>You can then call <tt class="docutils literal"><span class="pre">cfx</span> <span class="pre">run</span></tt> or <tt class="docutils literal"><span class="pre">cfx</span> <span class="pre">test</span></tt> in a terminal to check that the
+add-on works fine.</p>
+<p>Run <tt class="docutils literal"><span class="pre">cfx</span> <span class="pre">xpi</span></tt> to create an XPI file.</p>
+</div>
+<div class="section" id="install-package">
+<h2>Install package<a class="headerlink" href="#install-package" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="on-desktop">
+<h3>On Desktop<a class="headerlink" href="#on-desktop" title="Permalink to this headline">¶</a></h3>
+<p>To install Mephisto on a desktop browser (you have full access to UI), simply
+drag the XPI file on your browser window.</p>
+</div>
+<div class="section" id="on-server">
+<h3>On Server<a class="headerlink" href="#on-server" title="Permalink to this headline">¶</a></h3>
+<p>Installing Mephisto without access to Firefox UI is a bit more complicated.</p>
+<ul class="simple">
+<li>Create a folder name <tt class="file docutils literal"><span class="pre">mephisto&#64;temesis.com</span></tt> in the
+<tt class="file docutils literal"><span class="pre">extensions</span></tt> folder of your Firefox profile,</li>
+<li>Unzip the XPI file directly in the created folder,</li>
+<li>Start Firefox.</li>
+</ul>
+<p>On a server, you&#8217;ll need to start Firefox in a X server. It works fine with
+Xvfb.</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Mephisto provides the following settings:</p>
+<ul class="simple">
+<li><strong>extensions.mephisto.serverHost</strong>: HTTP server hostname (default localhost)</li>
+<li><strong>extensions.mephisto.serverPort</strong>: HTTP server port (default 8000)</li>
+</ul>
+<p>You can set these settings in the <tt class="docutils literal"><span class="pre">user.js</span></tt> file in your profile. For
+example:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">user_pref</span><span class="p">(</span><span class="s2">&quot;extensions.mephisto.serverHost&quot;</span><span class="p">,</span> <span class="s2">&quot;myhostname.com&quot;</span><span class="p">);</span>
+<span class="nx">user_pref</span><span class="p">(</span><span class="s2">&quot;extensions.mephisto.serverPort&quot;</span><span class="p">,</span> <span class="mi">8000</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must set a true hostname or IP, not 0.0.0.0, it won&#8217;t work.
+This issue might be fixed in a future release.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  
+
+<div id="footer">
+<p>Mephisto, a project backed by <a href="http://www.temesis.com/">Temesis</a>
+and hosted on <a href="https://github.com/Temesis/Mephisto">GitHub</a>.</p>
+<p>Site Content License <a rel="license"
+href="http://creativecommons.org/licenses/by/3.0/">Creative Commons
+Attribution 3.0 Unported License</a>.</p>
+</div>
+
+  </body>
+</html>

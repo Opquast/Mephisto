@@ -1,0 +1,122 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mephisto Hacking &mdash; Mephisto v0.2 documentation</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Mephisto v0.2 documentation" href="index.html" />
+    <link rel="prev" title="Mephisto Usage" href="usage.html" />
+<link rel="stylesheet" href="_static/screen.css" type="text/css" />
+
+  </head>
+  <body>
+<div id="header">
+<ul>
+  <li class="main"><a href="index.html">Mephisto</a></li>
+  <li><a href="install.html">Install</a></li>
+  <li><a href="usage.html">Use</a></li>
+  <li><a href="#">Hack</a></li>
+  <li><a href="credits.html">Credits</a></li>
+  <li><a href="https://github.com/Temesis/Mephisto">Code</a></li>
+</ul>
+</div>
+
+  
+    <div id="content">
+      
+  <div class="section" id="mephisto-hacking">
+<h1>Mephisto Hacking<a class="headerlink" href="#mephisto-hacking" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-your-own-views">
+<h2>Create your own views<a class="headerlink" href="#create-your-own-views" title="Permalink to this headline">¶</a></h2>
+<p>Adding your views is not difficult. First you have to install the <a class="reference external" href="https://jetpack.mozillalabs.com/">Mozilla Add-on SDK</a>.</p>
+<p>Then clone the Mephisto repository locally.</p>
+<p>To create a new view, open the file <tt class="file docutils literal"><span class="pre">lib/views.js</span></tt> and add a property to
+the object named <tt class="docutils literal"><span class="pre">exports.loaders</span></tt>. Your property name is the path of your
+new view and its content is an object containing the following optional
+callbacks:</p>
+<dl class="function">
+<dt id="onInit">
+<tt class="descname">onInit</tt><big>(</big><big>)</big><a class="headerlink" href="#onInit" title="Permalink to this definition">¶</a></dt>
+<dd><p>If you need to add some properties to your object before
+everything starts.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="onReady">
+<tt class="descname">onReady</tt><big>(</big><em>evt</em><big>)</big><a class="headerlink" href="#onReady" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when loaded document is ready.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="onLoad">
+<tt class="descname">onLoad</tt><big>(</big><em>evt</em><big>)</big><a class="headerlink" href="#onLoad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when document is loaded.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="onLoadWait">
+<tt class="descname">onLoadWait</tt><big>(</big><big>)</big><a class="headerlink" href="#onLoadWait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called one second after onLoad event.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="onTimeout">
+<tt class="descname">onTimeout</tt><big>(</big><big>)</big><a class="headerlink" href="#onTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called after a delay if page could not be loaded.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="onClose">
+<tt class="descname">onClose</tt><big>(</big><em>evt</em><big>)</big><a class="headerlink" href="#onClose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when tab is closed. Tab is closed after LoadWait event.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="onRequestLogStart">
+<tt class="descname">onRequestLogStart</tt><big>(</big><em>request</em>, <em>listener</em><big>)</big><a class="headerlink" href="#onRequestLogStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called on every request start.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="onRequestLogStop">
+<tt class="descname">onRequestLogStop</tt><big>(</big><em>request</em>, <em>listener</em><big>)</big><a class="headerlink" href="#onRequestLogStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called on every request stop.</p>
+</dd></dl>
+
+<p>In all callbacks, <tt class="docutils literal"><span class="pre">this</span></tt> represents the <tt class="docutils literal"><span class="pre">RequestProcessor</span></tt> instance (you
+may find it in <tt class="file docutils literal"><span class="pre">lib/httpd-handler.js</span></tt>).</p>
+<p>You can look at the existing views source code to learn how to make your own.</p>
+</div>
+</div>
+
+
+    </div>
+  
+
+<div id="footer">
+<p>Mephisto, a project backed by <a href="http://www.temesis.com/">Temesis</a>
+and hosted on <a href="https://github.com/Temesis/Mephisto">GitHub</a>.</p>
+<p>Site Content License <a rel="license"
+href="http://creativecommons.org/licenses/by/3.0/">Creative Commons
+Attribution 3.0 Unported License</a>.</p>
+</div>
+
+  </body>
+</html>
