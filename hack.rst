@@ -27,13 +27,13 @@ callbacks:
 
   Called when document is loaded.
 
-.. js:function:: onLoadWait()
-
-  Called one second after onLoad event.
-
 .. js:function:: onTimeout()
 
   Called after a delay if page could not be loaded.
+
+.. js:function:: onBeforeClose()
+
+  Called one second after onLoad event or after onTimeout event.
 
 .. js:function:: onClose(evt)
 
