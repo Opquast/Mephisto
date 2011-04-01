@@ -19,7 +19,7 @@ HTML source but I think you get the point.
 
 Example::
 
-  curl http://localhost:8000/?url=http://google.com/
+  curl http://localhost:9000/?url=http://google.com/
 
 Full report
 ===========
@@ -37,7 +37,7 @@ elements:
 
 Example::
 
-  curl http://localhost:8000/dump?url=http://google.com/
+  curl http://localhost:9000/dump?url=http://google.com/
 
 Screenshot
 ==========
@@ -96,7 +96,7 @@ view:
 
 You can add many ``modifier`` arguments to your query string. Example::
 
-  curl http://localhost:8000/dump?url=http://google.com/\
+  curl http://localhost:9000/dump?url=http://google.com/\
   &modifier=jquery-1.5-min.js&modifier=extractor.js
 
 This query load the built-in modifiers ``jquery-1.5-min.js`` and
