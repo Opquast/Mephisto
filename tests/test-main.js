@@ -35,9 +35,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const {extend} = require("utils");
 const main = require("main");
 const preferences = require("preferences-service");
+const {extend} = require("utils");
 const {register_data_dir} = require("views");
 
 // Starting main program
