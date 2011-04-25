@@ -115,6 +115,37 @@ exports.test_modifiers = function(test) {
     test.waitUntilDone(20000);
 };
 
+exports.test_modifiers_remote = function(test) {
+    serverGetTest('index.html', {
+        content: {
+            'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js', 'extractor.js']
+        },
+        onComplete: function(response) {
+            test.assertEqual(response.status, 200);
+            test.assertEqual(response.json.links.length, 1);
+            test.done();
+        }
+    });
+    test.waitUntilDone(20000);
+}
+
+exports.test_modifiers_file = function(test) {
+    serverGetTest('index.html', {
+        content: {
+            'modifier': [
+                'file://' + require("url").toFilename(require("self").data.url('modifiers/jquery.js')),
+                'file://' + require("url").toFilename(require("self").data.url('modifiers/extractor.js'))
+            ]
+        },
+        onComplete: function(response) {
+            test.assertEqual(response.status, 200);
+            test.assertEqual(response.json.links.length, 1);
+            test.done();
+        }
+    });
+    test.waitUntilDone(20000);
+}
+
 exports.test_monitor = function(test) {
     require("request").Request({
         headers: {"Accept": "application/json"},
