@@ -104,7 +104,7 @@ exports.test_window = function(test) {
 exports.test_modifiers = function(test) {
     serverGetTest('index.html', {
         content: {
-            'modifier': ['jquery-1.5.min.js', 'extractor.js']
+            'modifier': ['jquery.js', 'extractor.js']
         },
         onComplete: function(response) {
             test.assertEqual(response.status, 200);
