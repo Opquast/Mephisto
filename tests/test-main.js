@@ -130,12 +130,16 @@ exports.test_modifiers_remote = function(test) {
 }
 
 exports.test_modifiers_file = function(test) {
+    var {toFilename} = require("url");
+    var self = require("self");
+    var modifiers = [
+        'file://' + toFilename(self.data.url('modifiers/jquery.js')),
+        'file://' + toFilename(self.data.url('modifiers/extractor.js'))
+    ];
+    
     serverGetTest('index.html', {
         content: {
-            'modifier': [
-                'file://' + require("url").toFilename(require("self").data.url('modifiers/jquery.js')),
-                'file://' + require("url").toFilename(require("self").data.url('modifiers/extractor.js'))
-            ]
+            'modifier': modifiers
         },
         onComplete: function(response) {
             test.assertEqual(response.status, 200);
