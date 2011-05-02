@@ -36,7 +36,30 @@
  * ***** END LICENSE BLOCK ***** */
 
 (function() {
+    var width = request.GET.get('w') || 300;
+    var height = request.GET.get('h') || 200;
+    
+    window.resizeTo(1024, 700);
+    window.scrollbars.visible = true;
+    var w = document.width;
+    var h = height * w/width;
+    
+    var canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "rgb(255,255,255)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.scale(width/w, width/w);
+    ctx.drawWindow(window, 0, 0, w, h, "rgb(255,255,255)");
+    ctx.restore();
+    
+    var result = canvas.mozGetAsFile("screenshot", "image/png");
+    delete(ctx, canvas);
+    
     return {
-        'screenshot': btoa(sidecar.handler.screenshot(300,200).getAsBinary())
-    }
-})()
+        'screenshot': btoa(result.getAsBinary())
+    };
+})();
