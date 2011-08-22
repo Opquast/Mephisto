@@ -45,17 +45,6 @@
         return val;
     }
     
-    function get_head_links(rel) {
-        $('head>link[href][rel='+rel+']', document).each(function() {
-            links.push({
-                'uri': this.href,
-                'href': encoded(this.getAttribute('href')),
-                'label': encoded(this.getAttribute('title')),
-                'rel': encoded(this.getAttribute('rel'))
-            })
-        })
-    }
-    
     function get_stats(root) {
         return {
             'tables': $('table', root).length,
@@ -76,28 +65,27 @@
         }
     }
     
-    // Links
-    get_head_links('chapter');
-    get_head_links('contents');
-    get_head_links('next');
-    get_head_links('previous');
-    get_head_links('top');
-    
-    $('a[href]', body).each(function() {
+    var link_selection = $('head link[href][rel], body a[href]').each(function() {
+        var tag = this.tagName.toLowerCase();
+        var label = tag == 'link' && this.getAttribute('title') || this.textContent;
         links.push({
+            'tag': tag,
             'uri': this.href,
             'href': encoded(this.getAttribute('href')),
-            'label': encoded(this.textContent),
+            'label': encoded(label),
             'rel': encoded(this.getAttribute('rel'))
         });
     });
     
     // Images
-    $('img[src]', body).each(function() {
+    var img_selection = $('img[src]', body).each(function() {
         images.push({
             'uri': this.src,
             'src': encoded(this.getAttribute('src')),
-            'alt': encoded(this.getAttribute('alt'))
+            'alt': encoded(this.getAttribute('alt')),
+            'longdesc': encoded(this.getAttribute('longdesc')),
+            'width': encoded(this.getAttribute('width')),
+            'height': encoded(this.getAttribute('height'))
         })
     });
     
@@ -113,10 +101,16 @@
     stats['images'] = images.length;
     stats['links'] = links.length;
     
-    return {
+    window._extractor_result = {
+        'link_selection': link_selection,
+        'img_selection': img_selection
+    };
+    result = {
         'title': title,
         'links': links,
         'images': images,
         'stats': stats
     };
+    $.extend({}, window._extractor_result, result);
+    return result;
 })()
