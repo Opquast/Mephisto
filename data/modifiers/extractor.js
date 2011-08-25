@@ -73,7 +73,8 @@
             'uri': this.href,
             'href': encoded(this.getAttribute('href')),
             'label': encoded(label),
-            'rel': encoded(this.getAttribute('rel'))
+            'rel': encoded(this.getAttribute('rel')),
+            'type': encoded(this.getAttribute('type'))
         });
     });
     
