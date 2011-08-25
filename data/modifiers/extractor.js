@@ -111,6 +111,6 @@
         'images': images,
         'stats': stats
     };
-    $.extend({}, window._extractor_result, result);
+    $.extend(window._extractor_result, result);
     return result;
 })()
