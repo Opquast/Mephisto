@@ -41,7 +41,7 @@
     
     window.resizeTo(1024, 700);
     window.scrollbars.visible = true;
-    var w = document.width;
+    var w = document.body.offsetWidth;
     var h = height * w/width;
     
     var canvas = document.createElement('canvas');
