@@ -118,7 +118,7 @@ exports.test_modifiers = function(test) {
 exports.test_modifiers_remote = function(test) {
     serverGetTest('index.html', {
         content: {
-            'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js', 'extractor.js']
+            'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', 'extractor.js']
         },
         onComplete: function(response) {
             test.assertEqual(response.status, 200);
