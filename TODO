@@ -1,4 +1,2 @@
-- Disable window.location changes on browser
 - Handle network errors (in a better way than just a 500 error)
-- Handle resource eating pages
-- Debug on screenshots
+- Debug on screenshots (with type image/png)
