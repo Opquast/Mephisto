@@ -114,4 +114,4 @@
     };
     $.extend(window._extractor_result, result);
     return result;
-})()
+})();
