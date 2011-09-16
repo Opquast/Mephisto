@@ -51,6 +51,12 @@
             'data_tables': $('table:has(th, summary)', root).length,
             'forms': $('form', root).length,
             'lists': $('ul, ol, dl', root).length,
+            'lists_ul': $('ul', root).length,
+            'lists_ol': $('ol', root).length,
+            'lists_dl': $('dl', root).length,
+            'applet': $('applet', root).length,
+            'embed': $('embed', root).length,
+            'object': $('object', root).length,
             'styles': {
                 'font': $('font', root).length,
                 'tt': $('tt', root).length,
