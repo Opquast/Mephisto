@@ -57,9 +57,8 @@
     ctx.restore();
     
     var result = canvas.mozGetAsFile("screenshot", "image/png");
+    var data = canvas.toDataURL().split(',', 2)[1];
     delete(ctx, canvas);
-    
-    return {
-        'screenshot': btoa(result.getAsBinary())
-    };
+
+    return {'screenshot': data};
 })();
