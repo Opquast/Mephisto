@@ -146,7 +146,7 @@
 						try {
 							var key = _header[0].toLowerCase();
 							_header.shift();
-							var value = _header.join(":");
+							var value = $.trim(_header.join(":"));
 							
 							if(value != "") {
 								headers[key] = value.toString();
