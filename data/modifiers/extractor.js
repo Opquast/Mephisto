@@ -104,6 +104,80 @@
         title = encoded(title.text());
     }
     
+    // Objects
+    var objects = $('object, embed', body).each(function() {
+    	var unknown = true;
+    	var src = $(this).attr('data');
+    	
+    	if(!src) {
+    		src = $(this).attr('src');
+    	}
+    	
+    	if(!src) {
+    		$("param", this).each(function(){
+	    		if(this.name.toLowerCase() in ["src", "movie"]) {
+	    			src = this.value;
+	    		}
+	    	});
+    	}
+    	
+    	var a = document.createElement('a');
+		a.href = src;
+		src = a.href;
+		
+		for (var i in sidecar.resources) {
+			if (sidecar.resources[i]["uri"] == src) {
+				unknown = false;
+			}
+		}
+    	
+    	if(unknown) {
+    		$.ajax(src, {
+    			async: false,
+	    		success: function(data, textStatus, jqXHR){
+	    			//
+	    			var headers = {};
+	    			var _headers = jqXHR.getAllResponseHeaders().split("\n");
+	    			
+	    			//
+	    			for (var i in _headers) {
+	    				var _header = _headers[i].split(":");
+						
+						try {
+							var key = _header[0].toLowerCase();
+							_header.shift();
+							var value = $.trim(_header.join(":"));
+							
+							if(value != "") {
+								headers[key] = value.toString();
+							}
+						} catch(e) {}
+	    			}
+	    			
+	    			//
+	    			sidecar.resources.push({
+				        "uri": src,
+					    "referrer": document.location.href,
+					    "method": "HEAD",
+					    "status": jqXHR.status,
+					    "status_text": jqXHR.statusText,
+					    "date": jqXHR.getResponseHeader("date"),
+					    "modified": jqXHR.getResponseHeader("last-modified"),
+					    "expires": jqXHR.getResponseHeader("expires"),
+					    "content_type": jqXHR.getResponseHeader("content-type").split(";")[0],
+					    "charset": null,
+					    "size": 0,
+					    "headers": headers,
+					    "stop_time": 0,
+					    "start_time": 0,
+					    "transfer_time": 0
+				   	});
+	    		}
+	    	});			
+    	}
+    });
+    
+	//    
     var stats = get_stats(body);
     stats['images'] = images.length;
     stats['links'] = links.length;
