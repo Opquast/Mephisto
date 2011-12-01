@@ -2,7 +2,7 @@
     "name": "mephisto",
     "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
     "author": "Temesis SARL",
-    "version": "0.5",
+    "version": "0.6",
     "fullName": "Mephisto",
     "id": "mephisto@temesis.com",
     "description": "Mephisto is a Firefox Extension adding an HTTP server to Firefox to query pages."
