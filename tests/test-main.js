@@ -46,7 +46,7 @@ server = main.main();
 // Adding tests handler
 register_data_dir(server, '/tests/', 'tests');
 
-const server_host = preferences.get('extensions.mephisto.serverHost');
+const server_host = "localhost";
 const server_port = preferences.get('extensions.mephisto.serverPort');
 
 function serverGet(options) {
@@ -59,7 +59,7 @@ function serverGet(options) {
 function serverGetTest(path, options) {
     options.url = "http://" + server_host + ":" + server_port + "/dump";
     options.content = options.content || {};
-    
+
     extend(options.content, {
         'url': "http://" + server_host + ":" + server_port + "/tests/" + path
     })
@@ -136,7 +136,7 @@ exports.test_modifiers_file = function(test) {
         'file://' + toFilename(self.data.url('modifiers/jquery.js')),
         'file://' + toFilename(self.data.url('modifiers/extractor.js'))
     ];
-    
+
     serverGetTest('index.html', {
         content: {
             'modifier': modifiers
