@@ -153,10 +153,11 @@ exports.test_modifiers_file = function(test) {
 exports.test_monitor = function(test) {
     require("request").Request({
         headers: {"Accept": "application/json"},
-        url: "http://" + server_host + ":" + server_port + "/monitor",
+        url: "http://" + server_host + ":" + server_port + "/status",
         onComplete: function(response) {
             test.assertEqual(response.headers['Content-Type'].search(/^application\/json/), 0);
             test.assertEqual(response.json.tab_count, 1);
+            test.assert(response.json.memory.resident !== undefined);
             test.done();
         }
     }).get();
