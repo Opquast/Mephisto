@@ -38,13 +38,25 @@
 const main = require("main");
 const preferences = require("preferences-service");
 const {extend} = require("utils");
-const {register_data_dir} = require("views");
+
+function register_resource(server, path, resource_uri, content_type) {
+    content_type = content_type || "text/html";
+
+    server.registerPathHandler(path, function(req, rsp) {
+        rsp.processAsync();
+        rsp.setHeader('Content-Type', content_type, false);
+        rsp.write(require("self").data.load(resource_uri));
+        rsp.finish();
+    });
+};
 
 // Starting main program
 server = main.main();
 
-// Adding tests handler
-register_data_dir(server, '/tests/', 'tests');
+// Adding tests handlers
+register_resource(server, "/tests/index.html", "tests/index.html");
+register_resource(server, "/tests/infinite.html", "tests/infinite.html");
+register_resource(server, "/tests/window-features.html", "tests/window-features.html");
 
 const server_host = "localhost";
 const server_port = preferences.get('extensions.mephisto.serverPort');
@@ -101,7 +113,7 @@ exports.test_window = function(test) {
     test.waitUntilDone(20000);
 };
 
-exports.test_modifiers = function(test) {
+exports.test_modifiers_simple = function(test) {
     serverGetTest('index.html', {
         content: {
             'modifier': ['jquery.js', 'extractor.js']
@@ -118,7 +130,7 @@ exports.test_modifiers = function(test) {
 exports.test_modifiers_remote = function(test) {
     serverGetTest('index.html', {
         content: {
-            'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', 'extractor.js']
+            'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'extractor.js']
         },
         onComplete: function(response) {
             test.assertEqual(response.status, 200);
@@ -130,16 +142,30 @@ exports.test_modifiers_remote = function(test) {
 }
 
 exports.test_modifiers_file = function(test) {
-    var {toFilename} = require("url");
-    var self = require("self");
-    var modifiers = [
-        'file://' + toFilename(self.data.url('modifiers/jquery.js')),
-        'file://' + toFilename(self.data.url('modifiers/extractor.js'))
-    ];
+    // Getting profile's path
+    let {Cc, Ci} = require("chrome");
+    let file = require("file");
+    let self = require("self");
+    let ProfD = Cc["@mozilla.org/file/directory_service;1"]
+                .getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 
+    // Writing modifiers to files
+    let _jq = file.join(ProfD.path, "jquery.js");
+    let _ex = file.join(ProfD.path, "extractor.js");
+
+    let fp;
+    fp = file.open(_jq, "w");
+    fp.write(self.data.load("modifiers/jquery.js"));
+    fp.close();
+
+    fp = file.open(_ex, "w");
+    fp.write(self.data.load("modifiers/extractor.js"));
+    fp.close();
+
+    // Run test
     serverGetTest('index.html', {
-        content: {
-            'modifier': modifiers
+        'content': {
+            'modifier': ['file://' + _jq, 'file://' + _ex]
         },
         onComplete: function(response) {
             test.assertEqual(response.status, 200);
