@@ -55,7 +55,6 @@ server = main.main();
 
 // Adding tests handlers
 register_resource(server, "/tests/index.html", "tests/index.html");
-register_resource(server, "/tests/infinite.html", "tests/infinite.html");
 register_resource(server, "/tests/window-features.html", "tests/window-features.html");
 
 const server_host = "localhost";

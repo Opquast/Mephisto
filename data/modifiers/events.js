@@ -49,7 +49,7 @@ const esl = Components.classes["@mozilla.org/eventlistenerservice;1"].getService
         false
     );
     var events = [];
-    
+
     while (tw.nextNode()) {
         var event_list = [];
         esl.getListenerInfoFor(tw.currentNode,{}).forEach(function(value, key, array) {
@@ -61,6 +61,6 @@ const esl = Components.classes["@mozilla.org/eventlistenerservice;1"].getService
             events.push({'node': tw.currentNode, 'events': event_list});
         }
     }
-    
+
     sidecar.events = events;
 })();
