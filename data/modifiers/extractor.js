@@ -34,17 +34,18 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
+const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getService(Components.interfaces.nsIXMLHttpRequest);
 
 (function() {
     var links = [], images = [], body = $('body', document);
-    
+
     function encoded(val) {
         if (val !== undefined && val !== null) {
             val = unescape(encodeURIComponent(val));
         }
         return val;
     }
-    
+
     function get_stats(root) {
         return {
             'tables': $('table', root).length,
@@ -70,7 +71,7 @@
             }
         }
     }
-    
+
     var link_selection = $('head link[href][rel], body a[href]').each(function() {
         var tag = this.tagName.toLowerCase();
         var label = tag == 'link' && this.getAttribute('title') || this.textContent;
@@ -83,7 +84,7 @@
             'type': encoded(this.getAttribute('type'))
         });
     });
-    
+
     // Images
     var img_selection = $('img[src]', body).each(function() {
         images.push({
@@ -95,7 +96,7 @@
             'height': encoded(this.getAttribute('height'))
         })
     });
-    
+
     // Title
     var title = $('head>title');
     if (title.length == 0) {
@@ -103,85 +104,85 @@
     } else {
         title = encoded(title.text());
     }
-    
+
     // Objects
     var objects = $('object, embed', body).each(function() {
     	var unknown = true;
     	var src = $(this).attr('data');
-    	
+
     	if(!src) {
     		src = $(this).attr('src');
     	}
-    	
+
     	if(!src) {
     		$("param", this).each(function(){
-	    		if(this.name.toLowerCase() in ["src", "movie"]) {
-	    			src = this.value;
+    			var name = $(this).attr('name').toLowerCase();
+	    		if($.inArray(name, ["src", "movie"]) != -1) {
+	    			src = $(this).attr('value');
 	    		}
 	    	});
     	}
-    	
+
     	var a = document.createElement('a');
 		a.href = src;
 		src = a.href;
-		
-		for (var i in sidecar.resources) {
+
+		/*for (var i in sidecar.resources) {
 			if (sidecar.resources[i]["uri"] == src) {
 				unknown = false;
 			}
-		}
-    	
+		}*/
+
     	if(unknown) {
-    		$.ajax(src, {
-    			async: false,
-	    		success: function(data, textStatus, jqXHR){
-	    			//
-	    			var headers = {};
-	    			var _headers = jqXHR.getAllResponseHeaders().split("\n");
-	    			
-	    			//
-	    			for (var i in _headers) {
-	    				var _header = _headers[i].split(":");
-						
-						try {
-							var key = _header[0].toLowerCase();
-							_header.shift();
-							var value = $.trim(_header.join(":"));
-							
-							if(value != "") {
-								headers[key] = value.toString();
-							}
-						} catch(e) {}
-	    			}
-	    			
-	    			//
-	    			sidecar.resources.push({
-				        "uri": src,
-					    "referrer": document.location.href,
-					    "method": "HEAD",
-					    "status": jqXHR.status,
-					    "status_text": jqXHR.statusText,
-					    "date": jqXHR.getResponseHeader("date"),
-					    "modified": jqXHR.getResponseHeader("last-modified"),
-					    "expires": jqXHR.getResponseHeader("expires"),
-					    "content_type": jqXHR.getResponseHeader("content-type").split(";")[0],
-					    "charset": null,
-					    "size": 0,
-					    "headers": headers,
-					    "stop_time": 0,
-					    "start_time": 0,
-					    "transfer_time": 0
-				   	});
-	    		}
-	    	});			
+    		xhr.open("HEAD", src, false);
+			xhr.onload = function() {
+				//
+	    		var headers = {};
+	   			var _headers = xhr.getAllResponseHeaders().split("\n");
+
+	   			//
+	   			for (var i in _headers) {
+	   				var _header = _headers[i].split(":");
+
+					try {
+						var key = _header[0].toLowerCase();
+						_header.shift();
+						var value = $.trim(_header.join(":"));
+
+						if(value != "") {
+							headers[key] = value.toString();
+						}
+					} catch(e) {}
+	   			}
+
+ 	   			//
+  	  			sidecar.resources.push({
+			        "uri": src,
+				    "referrer": document.location.href,
+				    "method": "HEAD",
+				    "status": xhr.status,
+				    "status_text": xhr.statusText,
+				    "date": xhr.getResponseHeader("date"),
+				    "modified": xhr.getResponseHeader("last-modified"),
+				    "expires": xhr.getResponseHeader("expires"),
+				    "content_type": xhr.getResponseHeader("content-type").split(";")[0],
+				    "charset": null,
+				    "size": 0,
+				    "headers": headers,
+				    "stop_time": 0,
+				    "start_time": 0,
+				    "transfer_time": 0
+			   	});
+			}
+			xhr.send(null);
     	}
     });
-    
-	//    
+
+	//
     var stats = get_stats(body);
     stats['images'] = images.length;
     stats['links'] = links.length;
-    
+
     window._extractor_result = {
         'link_selection': link_selection,
         'img_selection': img_selection
