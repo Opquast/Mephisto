@@ -1,3 +1,14 @@
+version 0.7 - 2012-04-02
+------------------------
+
+* Updated httpServer and removed extensions.mephisto.serverHost
+* Restored memory status with new Firefox versions
+* Keep cookies on sub-request if a referer is present
+* New jQuery version on modifier
+* SDK 1.5 and Firefox 11 compatibility
+* Better logger
+* Fixed a bug with jQuery in some modifiers
+
 version 0.6 - 2011-12-01
 ------------------------
 
