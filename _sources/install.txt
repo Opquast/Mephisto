@@ -52,7 +52,6 @@ Configuration
 
 Mephisto provides the following settings:
 
-- **extensions.mephisto.serverHost**: HTTP server hostname (default localhost)
 - **extensions.mephisto.serverPort**: HTTP server port (default 9000)
 
 You can set these settings in the ``user.js`` file in your profile. For
@@ -60,9 +59,5 @@ example:
 
 .. code-block:: javascript
 
-  user_pref("extensions.mephisto.serverHost", "myhostname.com");
   user_pref("extensions.mephisto.serverPort", 9000);
-
-.. warning:: You must set a true hostname or IP, not 0.0.0.0, it won't work.
-             This issue might be fixed in a future release.
 

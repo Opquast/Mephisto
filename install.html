@@ -2,17 +2,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Mephisto Installation &mdash; Mephisto v0.3 documentation</title>
+    <title>Mephisto Installation &mdash; Mephisto 0.7 documentation</title>
+    
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.3',
+        VERSION:     '0.7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Mephisto v0.3 documentation" href="index.html" />
+    <link rel="top" title="Mephisto 0.7 documentation" href="index.html" />
     <link rel="next" title="Mephisto Usage" href="usage.html" />
     <link rel="prev" title="Mephisto" href="index.html" />
 <link rel="stylesheet" href="_static/screen.css" type="text/css" />
@@ -85,19 +88,12 @@ Xvfb.</p>
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>Mephisto provides the following settings:</p>
 <ul class="simple">
-<li><strong>extensions.mephisto.serverHost</strong>: HTTP server hostname (default localhost)</li>
 <li><strong>extensions.mephisto.serverPort</strong>: HTTP server port (default 9000)</li>
 </ul>
 <p>You can set these settings in the <tt class="docutils literal"><span class="pre">user.js</span></tt> file in your profile. For
 example:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">user_pref</span><span class="p">(</span><span class="s2">&quot;extensions.mephisto.serverHost&quot;</span><span class="p">,</span> <span class="s2">&quot;myhostname.com&quot;</span><span class="p">);</span>
-<span class="nx">user_pref</span><span class="p">(</span><span class="s2">&quot;extensions.mephisto.serverPort&quot;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">);</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">user_pref</span><span class="p">(</span><span class="s2">&quot;extensions.mephisto.serverPort&quot;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">);</span>
 </pre></div>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">You must set a true hostname or IP, not 0.0.0.0, it won&#8217;t work.
-This issue might be fixed in a future release.</p>
 </div>
 </div>
 </div>
