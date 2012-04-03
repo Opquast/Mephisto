@@ -129,11 +129,10 @@ exports.test_modifiers_simple = function(test) {
 exports.test_modifiers_remote = function(test) {
     serverGetTest('index.html', {
         content: {
-            'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'extractor.js']
+            'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js']
         },
         onComplete: function(response) {
             test.assertEqual(response.status, 200);
-            test.assertEqual(response.json.links.length, 1);
             test.done();
         }
     });
