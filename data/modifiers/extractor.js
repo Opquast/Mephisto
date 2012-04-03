@@ -36,8 +36,8 @@
  * ***** END LICENSE BLOCK ***** */
 const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getService(Components.interfaces.nsIXMLHttpRequest);
 
-(function() {
-    var links = [], images = [], body = jQueryMephisto('body', document);
+(function($) {
+    var links = [], images = [], body = $('body', document);
 
     function encoded(val) {
         if (val !== undefined && val !== null) {
@@ -48,31 +48,31 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 
     function get_stats(root) {
         return {
-            'tables': jQueryMephisto('table', root).length,
-            'data_tables': jQueryMephisto('table:has(th, summary)', root).length,
-            'forms': jQueryMephisto('form', root).length,
-            'lists': jQueryMephisto('ul, ol, dl', root).length,
-            'lists_ul': jQueryMephisto('ul', root).length,
-            'lists_ol': jQueryMephisto('ol', root).length,
-            'lists_dl': jQueryMephisto('dl', root).length,
-            'applet': jQueryMephisto('applet', root).length,
-            'embed': jQueryMephisto('embed', root).length,
-            'object': jQueryMephisto('object', root).length,
+            'tables': $('table', root).length,
+            'data_tables': $('table:has(th, summary)', root).length,
+            'forms': $('form', root).length,
+            'lists': $('ul, ol, dl', root).length,
+            'lists_ul': $('ul', root).length,
+            'lists_ol': $('ol', root).length,
+            'lists_dl': $('dl', root).length,
+            'applet': $('applet', root).length,
+            'embed': $('embed', root).length,
+            'object': $('object', root).length,
             'styles': {
-                'font': jQueryMephisto('font', root).length,
-                'tt': jQueryMephisto('tt', root).length,
-                'i': jQueryMephisto('i', root).length,
-                'b': jQueryMephisto('b', root).length,
-                'big': jQueryMephisto('big', root).length,
-                'small': jQueryMephisto('small', root).length,
-                'strike': jQueryMephisto('strike', root).length,
-                's': jQueryMephisto('s', root).length,
-                'u': jQueryMephisto('u', root).length
+                'font': $('font', root).length,
+                'tt': $('tt', root).length,
+                'i': $('i', root).length,
+                'b': $('b', root).length,
+                'big': $('big', root).length,
+                'small': $('small', root).length,
+                'strike': $('strike', root).length,
+                's': $('s', root).length,
+                'u': $('u', root).length
             }
         }
     }
 
-    var link_selection = jQueryMephisto('head link[href][rel], body a[href]').each(function() {
+    var link_selection = $('head link[href][rel], body a[href]').each(function() {
         var tag = this.tagName.toLowerCase();
         var label = tag == 'link' && this.getAttribute('title') || this.textContent;
         links.push({
@@ -86,7 +86,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
     });
 
     // Images
-    var img_selection = jQueryMephisto('img[src]', body).each(function() {
+    var img_selection = $('img[src]', body).each(function() {
         images.push({
             'uri': this.src,
             'src': encoded(this.getAttribute('src')),
@@ -98,7 +98,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
     });
 
     // Title
-    var title = jQueryMephisto('head>title');
+    var title = $('head>title');
     if (title.length == 0) {
         title = null;
     } else {
@@ -106,19 +106,19 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
     }
 
     // Objects
-    var objects = jQueryMephisto('object, embed', body).each(function() {
+    var objects = $('object, embed', body).each(function() {
     	var unknown = true;
-    	var src = jQueryMephisto(this).attr('data');
+    	var src = $(this).attr('data');
 
     	if(!src) {
-    		src = jQueryMephisto(this).attr('src');
+    		src = $(this).attr('src');
     	}
 
     	if(!src) {
-    		jQueryMephisto("param", this).each(function(){
-    			var name = jQueryMephisto(this).attr('name').toLowerCase();
-	    		if(jQueryMephisto.inArray(name, ["src", "movie"]) != -1) {
-	    			src = jQueryMephisto(this).attr('value');
+    		$("param", this).each(function(){
+    			var name = $(this).attr('name').toLowerCase();
+	    		if($.inArray(name, ["src", "movie"]) != -1) {
+	    			src = $(this).attr('value');
 	    		}
 	    	});
     	}
@@ -147,7 +147,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 					try {
 						var key = _header[0].toLowerCase();
 						_header.shift();
-						var value = jQueryMephisto.trim(_header.join(":"));
+						var value = $.trim(_header.join(":"));
 
 						if(value != "") {
 							headers[key] = value.toString();
@@ -193,6 +193,6 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
         'images': images,
         'stats': stats
     };
-    jQueryMephisto.extend(window._extractor_result, result);
+    $.extend(window._extractor_result, result);
     return result;
-})();
+})(jQueryMephisto);
