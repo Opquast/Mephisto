@@ -50,7 +50,7 @@ const esl = Components.classes["@mozilla.org/eventlistenerservice;1"].getService
     );
     var events = [];
 
-    while (tw.nextNode()) {
+    do {
         var event_list = [];
         esl.getListenerInfoFor(tw.currentNode,{}).forEach(function(value, key, array) {
             if(value.toSource()){
@@ -59,8 +59,8 @@ const esl = Components.classes["@mozilla.org/eventlistenerservice;1"].getService
         });
         if (event_list.length > 0) {
             events.push({'node': tw.currentNode, 'events': event_list});
-        }
-    }
+        } 
+    } while (tw.nextNode());
 
     sidecar.events = events;
 })();
