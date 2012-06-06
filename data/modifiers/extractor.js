@@ -40,7 +40,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 	var links = [], images = [], body = $('body', document);
 
 	function encoded(val) {
-		if(val !== undefined && val !== null) {
+		if (val !== undefined && val !== null) {
 			val = unescape(encodeURIComponent(val));
 		}
 		return val;
@@ -72,7 +72,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 		}
 	}
 
-	var link_selection = $('head link[href][rel], body a[href]').each(function() {
+	var link_selection = $('head link[href][rel], body a[href]:not([href^="#"])').each(function() {
 		var tag = this.tagName.toLowerCase();
 		var label = tag == 'link' && this.getAttribute('title') || this.textContent;
 		links.push({
@@ -99,7 +99,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 
 	// Title
 	var title = $('head>title');
-	if(title.length == 0) {
+	if (title.length == 0) {
 		title = null;
 	} else {
 		title = encoded(title.text());
@@ -111,27 +111,27 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 		var unknown = true, src;
 
 		//
-		if($(this).attr('data')) {
+		if ($(this).attr('data')) {
 			src = $(this).attr('data');
-		} else if($(this).attr('src')) {
+		} else if ($(this).attr('src')) {
 			src = $(this).attr('src');
 		} else {
 			$("param", this).each(function() {
 				var name = $(this).attr('name').toLowerCase();
-				if($.inArray(name, ["src", "movie"]) != -1) {
+				if ($.inArray(name, ["src", "movie"]) != -1) {
 					src = $(this).attr('value');
 				}
 			});
 		}
 
 		//
-		if(src) {
+		if (src) {
 			//
 			var a = document.createElement('a');
 			a.href = src;
 			src = a.href;
 
-			if(unknown) {
+			if (unknown) {
 				//
 				xhr.open("HEAD", src, false);
 
@@ -142,7 +142,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 					var _headers = xhr.getAllResponseHeaders().split("\n");
 
 					//
-					for(var i in _headers) {
+					for (var i in _headers) {
 						var _header = _headers[i].split(":");
 
 						try {
@@ -150,7 +150,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 							_header.shift();
 							var value = $.trim(_header.join(":"));
 
-							if(value != "") {
+							if (value != "") {
 								headers[key] = value.toString();
 							}
 						} catch(e) {
@@ -186,6 +186,26 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 	var stats = get_stats(body);
 	stats['images'] = images.length;
 	stats['links'] = links.length;
+
+	//
+	var known = {
+		"images" : [],
+		"links" : []
+	};
+	images = images.filter(function(element) {
+		if ($.inArray(element.src, known.images) == -1) {
+			known.images.push(element.src);
+			return true;
+		}
+		return false;
+	});
+	links = links.filter(function(element) {
+		if ($.inArray(links.href, known.images) == -1) {
+			known.links.push(links.href);
+			return true;
+		}
+		return false;
+	});
 
 	window._extractor_result = {
 		'link_selection' : link_selection,
