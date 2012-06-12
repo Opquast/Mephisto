@@ -34,7 +34,7 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getService(Components.interfaces.nsIXMLHttpRequest);
+const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getService(Components.interfaces.nsIXMLHttpRequest);
 
 (function($) {
 	var links = [], images = [], body = $('body', document);
@@ -133,13 +133,13 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 
 			if (unknown) {
 				//
-				xhr.open("HEAD", src, false);
+				xhrMephisto.open("HEAD", src, false);
 
 				//
-				xhr.onload = function() {
+				xhrMephisto.onload = function() {
 					//
 					var headers = {};
-					var _headers = xhr.getAllResponseHeaders().split("\n");
+					var _headers = xhrMephisto.getAllResponseHeaders().split("\n");
 
 					//
 					for (var i in _headers) {
@@ -162,12 +162,12 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 						"uri" : src,
 						"referrer" : document.location.href,
 						"method" : "HEAD",
-						"status" : xhr.status,
-						"status_text" : xhr.statusText,
-						"date" : xhr.getResponseHeader("date"),
-						"modified" : xhr.getResponseHeader("last-modified"),
-						"expires" : xhr.getResponseHeader("expires"),
-						"content_type" : xhr.getResponseHeader("content-type").split(";")[0],
+						"status" : xhrMephisto.status,
+						"status_text" : xhrMephisto.statusText,
+						"date" : xhrMephisto.getResponseHeader("date"),
+						"modified" : xhrMephisto.getResponseHeader("last-modified"),
+						"expires" : xhrMephisto.getResponseHeader("expires"),
+						"content_type" : xhrMephisto.getResponseHeader("content-type").split(";")[0],
 						"charset" : null,
 						"size" : 0,
 						"headers" : headers,
@@ -177,7 +177,7 @@ const xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].getSer
 					});
 				}
 				//
-				xhr.send(null);
+				xhrMephisto.send(null);
 			}
 		}
 	});
