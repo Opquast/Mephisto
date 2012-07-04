@@ -85,7 +85,6 @@ const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"
 		});
 	});
 
-	// Images
 	var img_selection = $('img[src]', body).each(function() {
 		images.push({
 			'uri' : this.src,
@@ -97,7 +96,6 @@ const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"
 		})
 	});
 
-	// Title
 	var title = $('head>title');
 	if (title.length == 0) {
 		title = null;
@@ -105,12 +103,9 @@ const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"
 		title = encoded(title.text());
 	}
 
-	// Objects
 	var objects = $('object, embed', body).each(function() {
-		//
 		var unknown = true, src;
 
-		//
 		if ($(this).attr('data')) {
 			src = $(this).attr('data');
 		} else if ($(this).attr('src')) {
@@ -124,24 +119,18 @@ const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"
 			});
 		}
 
-		//
 		if (src) {
-			//
 			var a = document.createElement('a');
 			a.href = src;
 			src = a.href;
 
 			if (unknown) {
-				//
 				xhrMephisto.open("HEAD", src, false);
 
-				//
 				xhrMephisto.onload = function() {
-					//
 					var headers = {};
 					var _headers = xhrMephisto.getAllResponseHeaders().split("\n");
 
-					//
 					for (var i in _headers) {
 						var _header = _headers[i].split(":");
 
@@ -157,7 +146,6 @@ const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"
 						}
 					}
 
-					//
 					sidecar.resources.push({
 						"uri" : src,
 						"referrer" : document.location.href,
@@ -176,47 +164,25 @@ const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"
 						"transfer_time" : 0
 					});
 				}
-				//
+
 				xhrMephisto.send(null);
 			}
 		}
-	});
-
-	//
-	var stats = get_stats(body);
-	stats['images'] = images.length;
-	stats['links'] = links.length;
-
-	//
-	var known = {
-		"images" : [],
-		"links" : []
-	};
-	images = images.filter(function(element) {
-		if ($.inArray(element.src, known.images) == -1) {
-			known.images.push(element.src);
-			return true;
-		}
-		return false;
-	});
-	links = links.filter(function(element) {
-		if ($.inArray(links.href, known.links) == -1) {
-			known.links.push(links.href);
-			return true;
-		}
-		return false;
 	});
 
 	window._extractor_result = {
 		'link_selection' : link_selection,
 		'img_selection' : img_selection
 	};
+
 	result = {
 		'title' : title,
 		'links' : links,
 		'images' : images,
-		'stats' : stats
+		'stats' : get_stats(document)
 	};
+
 	$.extend(window._extractor_result, result);
+
 	return result;
 })(jQueryMephisto);
