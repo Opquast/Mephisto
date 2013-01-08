@@ -96,9 +96,9 @@ const xhrMephisto = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"
 		})
 	});
 
-	var title = $('head>title');
+	var title = $('title');
 	if (title.length == 0) {
-		title = null;
+		title = "";
 	} else {
 		title = encoded(title.text());
 	}
