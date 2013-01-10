@@ -39,6 +39,14 @@ const main = require("main");
 const preferences = require("preferences-service");
 const {extend} = require("utils");
 
+const {Cc, Ci} = require("chrome");
+const file = require("sdk/io/file");
+const self = require("sdk/self");
+
+const ProfD = Cc["@mozilla.org/file/directory_service;1"]
+            .getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+
+
 function register_resource(server, path, resource_uri, content_type) {
     content_type = content_type || "text/html";
 
@@ -77,76 +85,66 @@ function serverGetTest(path, options) {
     serverGet(options);
 }
 
-exports.test_serve = function(test) {
+
+exports['test serve'] = function(assert, done) {
     serverGet({
         content: {
             url: 'http://google.com/'
         },
         onComplete: function(response) {
-            test.assertEqual(response.status, 200);
-            test.assertEqual(response.headers['Content-Type'].search(/^text\/plain/), 0);
-            test.done();
+            assert.ok(response.status == 200, "Status is OK 200");
+            assert.ok(response.headers['Content-Type'].search(/^text\/plain/) == 0, "Content-Type is text/plain");
+            done();
         }
     });
-    test.waitUntilDone(20000);
 };
 
-exports.test_base = function(test) {
+exports['test base'] = function(assert, done) {
     serverGetTest('index.html', {
         onComplete: function(response) {
-            test.assertEqual(response.status, 200);
-            test.assertEqual(response.json.resources.length, 1);
-            test.done();
+            assert.ok(response.status == 200, "Status is OK 200");
+            assert.ok(response.json.resources.length == 1, "There is only one resource");
+            done();
         }
     });
-    test.waitUntilDone(20000);
 };
 
-exports.test_window = function(test) {
+exports['test window'] = function(assert, done) {
     serverGetTest('window-features.html', {
         onComplete: function(response) {
-            test.assertEqual(response.status, 200);
-            test.done();
+            assert.ok(response.status == 200, "Status is OK 200");
+            done();
         }
     });
-    test.waitUntilDone(20000);
 };
 
-exports.test_modifiers_simple = function(test) {
+exports['test modifiers simple'] = function(assert, done) {
     serverGetTest('index.html', {
         content: {
-            'modifier': ['jquery.js', 'extractor.js']
+            'modifier': ['jquery.js', 'extractor.js', 'screenshot.js']
         },
         onComplete: function(response) {
-            test.assertEqual(response.status, 200);
-            test.assertEqual(response.json.links.length, 1);
-            test.done();
+            assert.ok(response.status == 200, "Status is OK 200");
+            assert.ok(response.json.links.length == 1, "One link was found");
+            assert.ok(response.json.screenshot.length > 0, "A screenshot was made");
+            done();
         }
     });
-    test.waitUntilDone(20000);
 };
 
-exports.test_modifiers_remote = function(test) {
+exports['test modifiers remote'] = function(assert, done) {
     serverGetTest('index.html', {
         content: {
             'modifier': ['http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js']
         },
         onComplete: function(response) {
-            test.assertEqual(response.status, 200);
-            test.done();
+            assert.ok(response.status == 200, "Status is OK 200");
+            done();
         }
     });
-    test.waitUntilDone(20000);
-}
+};
 
-exports.test_modifiers_file = function(test) {
-    // Getting profile's path
-    let {Cc, Ci} = require("chrome");
-    let file = require("file");
-    let self = require("self");
-    let ProfD = Cc["@mozilla.org/file/directory_service;1"]
-                .getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
-
+exports['test modifiers file'] = function(assert, done) {
     // Writing modifiers to files
     let _jq = file.join(ProfD.path, "jquery.js");
     let _ex = file.join(ProfD.path, "extractor.js");
@@ -166,24 +164,25 @@ exports.test_modifiers_file = function(test) {
             'modifier': ['file://' + _jq, 'file://' + _ex]
         },
         onComplete: function(response) {
-            test.assertEqual(response.status, 200);
-            test.assertEqual(response.json.links.length, 1);
-            test.done();
+            assert.ok(response.status == 200, "Status is OK 200");
+            assert.ok(response.json.links.length == 1, "One link was found");
+            done();
         }
     });
-    test.waitUntilDone(20000);
 }
 
-exports.test_monitor = function(test) {
+exports['test monitor'] = function(assert, done) {
     require("request").Request({
         headers: {"Accept": "application/json"},
         url: "http://" + server_host + ":" + server_port + "/status",
         onComplete: function(response) {
-            test.assertEqual(response.headers['Content-Type'].search(/^application\/json/), 0);
-            test.assertEqual(response.json.tab_count, 1);
-            test.assert(response.json.memory.resident !== undefined);
-            test.done();
+            assert.ok(response.headers['Content-Type'].search(/^application\/json/) == 0, 'Content-Type is json');
+            assert.ok(response.json.tab_count == 1, "One tab opened");
+            assert.ok(response.json.memory.resident !== undefined);
+            done();
         }
     }).get();
-    test.waitUntilDone(20000);
 };
+
+
+require("sdk/test").run(exports);

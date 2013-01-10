@@ -39,26 +39,5 @@
     var width = request.GET.get('w') || 300;
     var height = request.GET.get('h') || 200;
 
-    window.resizeTo(1024, 700);
-    window.scrollbars.visible = true;
-    var w = window.document.body.offsetWidth;
-    var h = height * w/width;
-
-    var canvas = window.document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-
-    var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "rgb(255,255,255)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.scale(width/w, width/w);
-    ctx.drawWindow(window, 0, 0, w, h, "rgb(255,255,255)");
-    ctx.restore();
-
-    var result = canvas.mozGetAsFile("screenshot", "image/png");
-    var data = canvas.toDataURL().split(',', 2)[1];
-    delete(ctx, canvas);
-
-    return {'screenshot': data};
+    return {'screenshot': takeScreenshot(width, height)};
 })();

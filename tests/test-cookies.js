@@ -43,41 +43,44 @@ function make_uri(uri) {
     return ioService.newURI(uri, null, null);
 }
 
-exports.test_simple = function(test) {
+exports['test simple'] = function(assert) {
     let uri = make_uri('http://www.example.com/');
     let cookie = new CookieParser("test=1", uri);
-    
-    test.assertEqual(cookie.name, 'test');
-    test.assertEqual(cookie.value, '1');
-    test.assertEqual(cookie.host, 'www.example.com');
-    test.assertEqual(cookie.path, '/');
+
+    assert.equal(cookie.name, 'test');
+    assert.equal(cookie.value, '1');
+    assert.equal(cookie.host, 'www.example.com');
+    assert.equal(cookie.path, '/');
 };
 
-exports.test_domain = function(test) {
+exports['test_domain'] = function(assert) {
     let uri = make_uri('http://www.example.com/');
     let cookie = new CookieParser("test=1; domain=.example.com", uri);
-    
-    test.assertEqual(cookie.host, '.example.com');
-    test.assertEqual(cookie.checkPermission(make_uri('http://www.example.com/')), true);
-    test.assertEqual(cookie.checkPermission(make_uri('http://images.example.com/')), true);
-    test.assertEqual(cookie.checkPermission(make_uri('http://www.testexample.com/')), false);
+
+    assert.equal(cookie.host, '.example.com');
+    assert.equal(cookie.checkPermission(make_uri('http://www.example.com/')), true);
+    assert.equal(cookie.checkPermission(make_uri('http://images.example.com/')), true);
+    assert.equal(cookie.checkPermission(make_uri('http://www.testexample.com/')), false);
 };
 
-exports.test_path = function(test) {
+exports['test_path'] = function(assert) {
     let uri = make_uri('http://www.example.net/');
     let cookie = new CookieParser("test=1; path=/test/", uri);
-    
-    test.assertEqual(cookie.path, '/test/');
-    test.assertEqual(cookie.checkPermission(make_uri('http://www.example.net/')), false);
-    test.assertEqual(cookie.checkPermission(make_uri('http://www.example.net/test/')), true);
-    test.assertEqual(cookie.checkPermission(make_uri('http://www.example.net/test/foo')), true);
+
+    assert.equal(cookie.path, '/test/');
+    assert.equal(cookie.checkPermission(make_uri('http://www.example.net/')), false);
+    assert.equal(cookie.checkPermission(make_uri('http://www.example.net/test/')), true);
+    assert.equal(cookie.checkPermission(make_uri('http://www.example.net/test/foo')), true);
 };
 
-exports.test_perm = function(test) {
+exports['test_perm'] = function(assert) {
     let uri = make_uri('http://example.org/');
     let cookie = new CookieParser("test=1; path=/; domain=example.org", uri);
-    
-    test.assertEqual(cookie.checkPermission(make_uri('http://www.example.org/')), false);
-    test.assertEqual(cookie.checkPermission(make_uri('http://example.org/')), true);
-    test.assertEqual(cookie.checkPermission(make_uri('http://example.org/foo')), true);
+
+    assert.equal(cookie.checkPermission(make_uri('http://www.example.org/')), false);
+    assert.equal(cookie.checkPermission(make_uri('http://example.org/')), true);
+    assert.equal(cookie.checkPermission(make_uri('http://example.org/foo')), true);
 };
+
+
+require("sdk/test").run(exports);
