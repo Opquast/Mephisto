@@ -1,0 +1,3 @@
+[submodule "extension/packages/shadowjs"]
+	path = extension/packages/shadowjs
+	url = git@github.com:olivier-m/shadowjs.git

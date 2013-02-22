@@ -1,0 +1,11 @@
+{
+    "id": "shadowjs@neokraft.net",
+    "name": "mephisto",
+    "fullName": "mephisto",
+    "description": "",
+    "author": "Temesis SAS",
+    "version": "2.0",
+    "license": "MPL 2.0",
+
+    "dependencies": ["shadow"]
+}
