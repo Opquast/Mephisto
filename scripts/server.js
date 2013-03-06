@@ -34,7 +34,7 @@ preferences.set("network.prefetch-next", false);
 console.log("Starting", shadow.extensionName, shadow.extensionVersion, "/", shadow.appName, shadow.appVersion);
 
 const server = webserver.create();
-const serverPort = parseInt(system.args[1]) || 9000;
+const serverPort = system.args[1] || 9000;
 server.listen(serverPort);
 
 const initPage = function(page, request, response) {
