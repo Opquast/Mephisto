@@ -22,7 +22,7 @@ const run = function(page, url, options, testIDs) {
         }
 
         runner = testRunner.create(page.sandbox.sandbox, page.plainText, har);
-        return runner.run();
+        return runner.run(options, testIDs);
     })
     .then(function(results) {
         // Uncomment if you want to dump results
