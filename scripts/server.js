@@ -59,6 +59,10 @@ const initPage = function(page, request, response) {
         response.close();
     });
 
+    page.onConsoleMessage = function() {
+        // We don't want page console messages
+    };
+
     // Handle authentication
     if (request.headers["authorization"]) {
         try {
