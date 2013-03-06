@@ -1,3 +1,6 @@
 [submodule "extension/packages/shadowjs"]
 	path = extension/packages/shadowjs
 	url = git@github.com:olivier-m/shadowjs.git
+[submodule "extension/packages/opquast-test-runner"]
+	path = extension/packages/opquast-test-runner
+	url = git://github.com/Opquast/opquast-test-runner.git
