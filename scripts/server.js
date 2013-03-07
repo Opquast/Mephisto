@@ -321,4 +321,4 @@ server.registerPath("/status", function(request, response) {
 });
 
 
-console.log("Server running on port", server.port, "...");
+console.log("Server running on ", server.host + ":" + server.port, "...");
