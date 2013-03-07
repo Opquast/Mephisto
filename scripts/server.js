@@ -8,6 +8,8 @@ const utils = require("lib/utils");
 const webpage = require("webpage");
 const webserver = require("webserver");
 
+// Enhance console
+require("lib/console").ConsoleLogger();
 
 // This is a server, we should set some preferences to avoid problems
 preferences.set("browser.cache.disk.enable", false);
@@ -97,6 +99,8 @@ const pageOptions = {
 Page DOM
 */
 server.registerPath("/", function(request, response) {
+    console.log(request.method, request.url);
+
     if (!request.get.url) {
         response.writeHead(400, {"content-type": "text/plain"});
         response.write("No url provided");
@@ -139,6 +143,8 @@ server.registerPath("/", function(request, response) {
 Page dump
 */
 server.registerPath("/dump", function(request, response) {
+    console.log(request.method, request.url);
+
     if (!request.get.url) {
         response.writeHead(400, {"content-type": "text/plain"});
         response.write("No url provided");
@@ -227,6 +233,8 @@ server.registerPath("/dump", function(request, response) {
 Page screenshot
 */
 server.registerPath("/screenshot", function(request, response) {
+    console.log(request.method, request.url);
+
     if (!request.get.url) {
         response.writeHead(400, {"content-type": "text/plain"});
         response.write("No url provided");
@@ -276,6 +284,8 @@ server.registerPath("/screenshot", function(request, response) {
 Server Status
 */
 server.registerPath("/status", function(request, response) {
+    console.log(request.method, request.url);
+
     var format = "txt";
 
     if (request.headers.accept && request.headers.accept.search("application/json") != -1) {
