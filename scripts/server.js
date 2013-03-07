@@ -149,7 +149,6 @@ server.registerPath("/dump", function(request, response) {
     let testIDs = (request.get.tests || "").split(",").filter(function(v) {
         return v;
     });
-    console.log(JSON.stringify(testIDs))
     let content = {};
     let runner;
     let testStart;
