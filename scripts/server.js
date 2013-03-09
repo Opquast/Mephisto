@@ -168,7 +168,16 @@ server.registerPath("/dump", function(request, response) {
         if (result === "fail") {
             throw new Error("Failed loading page");
         }
-        runner = testRunner.create(page.sandbox.sandbox, page.plainText, har);
+        runner = testRunner.create({
+            sandbox: page.sandbox.sandbox,
+            plainText: page.plainText,
+            har: har,
+            extractObjects: true,
+            runOptions: {
+                debug_validator: false,
+                show_errors: false
+            }
+        });
 
         // Get resources (async)
         return runner.init().then(function() {

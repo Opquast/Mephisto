@@ -11,7 +11,7 @@ if (!url) {
     shadow.exit(1);
 }
 
-const run = function(page, url, options, testIDs) {
+const run = function(page, url, runOptions, testIDs) {
     let har = harLib.init(page);
     let runner;
 
@@ -21,8 +21,14 @@ const run = function(page, url, options, testIDs) {
             throw new Error("Page not loaded");
         }
 
-        runner = testRunner.create(page.sandbox.sandbox, page.plainText, har);
-        return runner.run(options, testIDs);
+        runner = testRunner.create({
+            sandbox: page.sandbox.sandbox,
+            plainText: page.plainText,
+            har: har,
+            extractObjects: true,
+            runOptions: runOptions
+        });
+        return runner.run(testIDs);
     })
     .then(function(results) {
         // Uncomment if you want to dump results
