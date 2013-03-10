@@ -86,8 +86,8 @@ const gc = function(page) {
 };
 
 const pageOptions = {
-    startTimeout: 10000,
-    loadTimeout: 30000,
+    startTimeout: 15000,
+    loadTimeout: 45000,
     loadWait: 1000,
     captureTypes: [
         /^test\/css/,
