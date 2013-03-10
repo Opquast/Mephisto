@@ -212,6 +212,19 @@ server.registerPath("/dump", function(request, response) {
         content.oaa_results = results;
     })
     .then(function() {
+        // Results formating
+        content.oaa_results = content.oaa_results.map(function(v) {
+            v.details = v.details.map(function(d) {
+                if (typeof(d.selector) !== "undefined") {
+                    delete(d.selector);
+                    delete(d.text);
+                }
+                return d;
+            });
+            return v;
+        });
+    })
+    .then(function() {
         response.headers["Content-Type"] = "application/json; charset=UTF-8";
         // Crazy UTF-8 conversion
         response.write(
