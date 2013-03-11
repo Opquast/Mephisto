@@ -228,7 +228,7 @@ server.registerPath("/dump", function(request, response) {
         response.headers["Content-Type"] = "application/json; charset=UTF-8";
         // Crazy UTF-8 conversion
         response.write(
-            unescape(encodeURIComponent(JSON.stringify(content, null, 2)))
+            unescape(encodeURIComponent(JSON.stringify(content)))
         );
         response.close();
     })
@@ -349,6 +349,19 @@ server.registerPath("/status", function(request, response) {
     } else {
         writeReport();
     }
+});
+
+
+/*
+Automation statuses
+*/
+server.registerPath("/status/automation", function(request, response) {
+    console.log(request.method, request.url);
+
+    let ids = Object.keys(testRunner.getRules().rulesets);
+    response.headers["Content-Type"] = "application/json; charset=UTF-8";
+    response.write(JSON.stringify(ids));
+    response.close();
 });
 
 
