@@ -359,6 +359,7 @@ server.registerPath("/status/automation", function(request, response) {
     console.log(request.method, request.url);
 
     let ids = Object.keys(testRunner.getRules().rulesets);
+    ids = ids.map(function(v) parseInt(v) || null).filter(function(v) v !== null);
     response.headers["Content-Type"] = "application/json; charset=UTF-8";
     response.write(JSON.stringify(ids));
     response.close();
