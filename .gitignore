@@ -1,3 +1,2 @@
-*.xpi
-
-/user
+/node_modules
+/extension/mephisto.xpi
