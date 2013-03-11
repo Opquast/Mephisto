@@ -19,8 +19,7 @@
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
- *   Fabrice Bonny <fabrice.bonny@temesis.com> (Original Author)
- *   Olivier Meunier <olivier.meunier@temesis.com>
+ *   Olivier Meunier <olivier.meunier@temesis.com> (Original Author)
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -35,32 +34,43 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-const esl = Components.classes["@mozilla.org/eventlistenerservice;1"].getService(Components.interfaces.nsIEventListenerService);
 
-(function() {
-    var tw = window.document.createTreeWalker(
-        window.document,
-        window.NodeFilter.SHOW_ELEMENT,
-        {
-            acceptNode: function(node){
-                return window.NodeFilter.FILTER_ACCEPT
-            }
-        },
-        false
-    );
-    var events = [];
+// This module allows you to filter console logs by level. If you don't want
+// to see all debug output, you can set a preference with desired log level:
+//
+// extensions.mephisto.logLevel
+//
 
-    do {
-        var event_list = [];
-        esl.getListenerInfoFor(tw.currentNode,{}).forEach(function(value, key, array) {
-            if(value.toSource()){
-                event_list.push(value);
-            }
-        });
-        if (event_list.length > 0) {
-            events.push({'node': tw.currentNode, 'events': event_list});
-        } 
-    } while (tw.nextNode());
+var ERROR = 0x1;
+var WARN = 0x2;
+var INFO = 0x4;
+var DEBUG = 0x8;
 
-    sidecar.events = events;
-})();
+var LEVELS = {
+    'NONE': 0,
+    'ERROR': ERROR,
+    'WARN' : ERROR | WARN,
+    'INFO' : ERROR | WARN | INFO,
+    'DEBUG': ERROR | WARN | INFO | DEBUG
+};
+
+function log_wrapp(func, current_level, log_level, level_name) {
+    if (current_level & log_level) {
+        return function() {
+            var args = Array.prototype.slice.call(arguments);
+            args.unshift(new Date().toString(), level_name);
+            return func.apply(null, args);
+        }
+    }
+    return function() {};
+}
+
+exports.ConsoleLogger = function(current_level) {
+    current_level = LEVELS[(new String(current_level)).toUpperCase()] || LEVELS.INFO;
+
+    console.debug = log_wrapp(console.debug, current_level, DEBUG, "debug");
+    console.log = log_wrapp(console.log, current_level, INFO, "info");
+    console.info = log_wrapp(console.info, current_level, INFO, "info");
+    console.warn = log_wrapp(console.warn, current_level, WARN, "warn");
+    console.error = log_wrapp(console.error, current_level, ERROR, "error");
+};

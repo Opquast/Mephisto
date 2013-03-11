@@ -1,2 +1,0 @@
-- Handle network errors (in a better way than just a 500 error)
-- Debug on screenshots (with type image/png)

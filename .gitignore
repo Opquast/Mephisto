@@ -1,8 +1,2 @@
-.project
-.settings
-
-.DS_Store
-
-*.xpi
-
-/user
+/node_modules
+/extension/mephisto.xpi

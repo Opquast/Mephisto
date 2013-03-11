@@ -1,6 +1,8 @@
 {
-    "name": "Mephisto",
+    "id": "mephisto@temesis.com",
     "version": "2.0.0",
+    "name": "mephisto",
+    "fullName": "Mephisto",
     "description": "Opquast Automated Test Runner",
 
     "author": "Temesis SAS (http://www.temesis.com/)",
@@ -8,9 +10,8 @@
         "Olivier Meunier <olivier.meunier@temesis.com>",
         "Fabrice Bonny <fabrice.bonny@temesis.com>"
     ],
-    "license": "BSD",
 
-    "devDependencies": {
-        "grunt": "0.4.0"
-    }
+    "license": "MPL 2.0",
+
+    "dependencies": ["opquast-tests", "shadow"]
 }

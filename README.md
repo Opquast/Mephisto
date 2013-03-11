@@ -1,13 +1,38 @@
 # Mephisto
 
-Mephisto is a Mozilla Firefox 4 Add-On that adds an HTTP server inside your
-browser. This server is able to open webpages and returns content information
-or screenshots.
+## Develop with Mephisto
 
-Common tools like curl or urllib2 will only give you the main HTML code of a
-webpage. On many websites, this source code is not the final document given to
-the user as some script may have modified it. Sometimes you want to check the 
-validity of your document based on some criteria. Your source could be OK but 
-your DOM a terrible mess.
+### Installation (for developers)
 
-Find more information on [Mephisto website](http://temesis.github.com/Mephisto/).
+You need node.js, npm, grunt and Mozilla Addon-SDK to work on Mephisto scripts.
+
+Prepare your environment:
+
+```sh
+# Once you activated your SDK virtual-env
+
+# Update submodules
+git submodule update --init --recursive
+
+# Install npm deps
+npm install
+```
+
+### Start Mephisto with grunt
+
+It's easier to launch Mephisto with dedicated "mephisto" grunt task.
+
+To launch server:
+
+```sh
+grunt mephisto:scripts/server.js
+
+# or shortcut:
+grunt runserver
+```
+
+To launch a test script:
+
+```sh
+grunt mephisto:scripts/launch-tests.js:"http\:google.com/"
+```
