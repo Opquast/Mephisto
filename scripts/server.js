@@ -35,8 +35,16 @@ preferences.set("network.prefetch-next", false);
 
 console.log("Starting", shadow.extensionName, shadow.extensionVersion, "/", shadow.appName, shadow.appVersion);
 
+const options = {}
+system.args.slice(1).forEach(function(v) {
+    let parts = v.split("=");
+    if (parts.length > 1 && parts[0].indexOf("--") === 0) {
+        options[parts[0].substr(2)] = parts.slice(1).join("=");
+    }
+});
+
 const server = webserver.create();
-const serverPort = system.args[1] || 9000;
+const serverPort = options.port || 9000;
 server.listen(serverPort);
 
 const initPage = function(page, request, response) {
@@ -352,18 +360,24 @@ server.registerPath("/status", function(request, response) {
 });
 
 
-/*
-Automation statuses
-*/
-server.registerPath("/status/automation", function(request, response) {
-    console.log(request.method, request.url);
-
-    let ids = Object.keys(testRunner.getRules().rulesets);
-    ids = ids.map(function(v) parseInt(v) || null).filter(function(v) v !== null);
-    response.headers["Content-Type"] = "application/json; charset=UTF-8";
-    response.write(JSON.stringify(ids));
-    response.close();
-});
-
-
 console.log("Server running on ", server.host + ":" + server.port, "...");
+
+if (options.autoupdate) {
+    require("request").Request({
+        url: options.autoupdate,
+        headers: {
+            "Accept": "application/json"
+        },
+        contentType: "application/json",
+        content: JSON.stringify(testRunner.getRules().rulesets),
+        onComplete: function(response) {
+            if (response.status === 200) {
+                console.log("Auto:", response.json.full, "Semi-auto:", response.json.semi);
+            } else {
+                console.error("Auto update failed (" + response.status + ")");
+                console.error(response.text);
+            }
+        }
+    }).post();
+    console.log("Push criterion updates to", options.autoupdate);
+}

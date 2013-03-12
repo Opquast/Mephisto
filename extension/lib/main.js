@@ -8,6 +8,7 @@ exports.main = function(loadReason, staticArgs) {
             modules["base64"] = require("sdk/base64");
             modules["preferences"] = require("sdk/preferences/service");
             modules["promise"] = require("sdk/core/promise");
+            modules["request"] = require("sdk/request");
             modules["test-runner"] = require("opquast-tests/test-runner");
         }
     };
