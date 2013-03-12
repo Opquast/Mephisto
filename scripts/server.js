@@ -90,7 +90,7 @@ const pageOptions = {
     loadTimeout: 45000,
     loadWait: 1000,
     captureTypes: [
-        /^test\/css/,
+        /^text\/css/,
         /^(application|text)\/(x-)?javascript/,
     ]
 };

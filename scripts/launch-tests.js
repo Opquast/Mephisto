@@ -48,7 +48,7 @@ let p = webpage.create({
     loadTimeout: 30000,
     loadWait: 1000,
     captureTypes: [
-        /^test\/css/,
+        /^text\/css/,
         /^(application|text)\/(x-)?javascript/,
     ]
 });
