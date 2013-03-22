@@ -1,6 +1,6 @@
 "use strict";
 const base64 = require("base64");
-const harLib = require("lib/har");
+const {harCollector} = require("har");
 const preferences = require("preferences");
 const system = require("system");
 const testRunner = require("test-runner");
@@ -85,6 +85,19 @@ const initPage = function(page, request, response) {
     }
 };
 
+const assertPage = function(page, result) {
+    if (result === "fail") {
+        throw new Error('Failed to load page (page status)');
+    }
+
+    let body = page.evaluate(function() {
+        return document.body;
+    });
+    if (!body) {
+        throw new Error('Failed to load page (no document.body)')
+    }
+};
+
 const gc = function(page) {
     let win = page.evaluate(function() { return window; });
     shadow.doCC(win);
@@ -95,8 +108,11 @@ const gc = function(page) {
 
 const pageOptions = {
     startTimeout: 15000,
-    loadTimeout: 45000,
-    loadWait: 1000,
+    loadTimeout: 50000,
+    loadWait: 1200
+};
+
+const collectOptions = {
     captureTypes: [
         /^text\/css/,
         /^(application|text)\/(x-)?javascript/,
@@ -121,9 +137,7 @@ server.registerPath("/", function(request, response) {
 
     page.open(request.get.url)
     .then(function(result) {
-        if (result === "fail") {
-            throw new Error("Failed loading page");
-        }
+        assertPage(page, result);
 
         let dom = page.evaluate(function() {
             let x = new XMLSerializer();
@@ -135,15 +149,17 @@ server.registerPath("/", function(request, response) {
         response.close();
     })
     .then(gc.bind(null, page))
-    .then(page.close)
     .then(null, function(e) {
-        page.close();
         console.error(e);
         console.exception(e);
         response.writeHead(500);
         response.headers["content-type"] = "text/plain";
         response.write("ERROR:" + e);
         response.close();
+    })
+    .then(page.close)
+    .then(function() {
+        page = null;
     });
 });
 
@@ -168,19 +184,19 @@ server.registerPath("/dump", function(request, response) {
     let testStart;
 
     let page = webpage.create(pageOptions);
-    let har = harLib.init(page);
+    let collector = harCollector(page, collectOptions);
     initPage(page, request, response);
 
     page.open(request.get.url)
     .then(function(result) {
-        if (result === "fail") {
-            throw new Error("Failed loading page");
-        }
+        assertPage(page, result);
+
         runner = testRunner.create({
             sandbox: page.sandbox.sandbox,
             plainText: page.plainText,
-            har: har,
+            har: collector.data,
             extractObjects: true,
+            timeout: 240000,
             runOptions: {
                 debug_validator: false,
                 show_errors: false
@@ -241,9 +257,7 @@ server.registerPath("/dump", function(request, response) {
         response.close();
     })
     .then(gc.bind(null, page))
-    .then(page.close)
     .then(null, function(e) {
-        page.close();
         console.error(e);
         console.exception(e);
         response.writeHead(500);
@@ -251,6 +265,7 @@ server.registerPath("/dump", function(request, response) {
         response.write("ERROR:" + e);
         response.close();
     })
+    .then(page.close)
     .then(function() {
         page = null;
         content = null;
@@ -281,9 +296,7 @@ server.registerPath("/screenshot", function(request, response) {
 
     page.open(request.get.url)
     .then(function(result) {
-        if (result === "fail") {
-            throw new Error("Failed loading page");
-        }
+        assertPage(page, result);
         return utils.makeScreenshot(page, w, h, asB64);
     })
     .then(function(render) {
@@ -297,15 +310,17 @@ server.registerPath("/screenshot", function(request, response) {
         response.close();
     })
     .then(gc.bind(null, page))
-    .then(page.close)
     .then(null, function(e) {
-        page.close();
         console.error(e);
         console.exception(e);
         response.writeHead(500);
         response.headers["content-type"] = "text/plain";
         response.write("ERROR:" + e);
         response.close();
+    })
+    .then(page.close)
+    .then(function() {
+        page = null;
     });
 });
 
