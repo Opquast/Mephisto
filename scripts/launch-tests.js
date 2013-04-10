@@ -3,7 +3,7 @@ const system = require("system");
 const webpage = require("webpage");
 
 const testRunner = require("test-runner");
-const harLib = require("lib/har");
+const {harCollector} = require("har");
 
 let url = system.args[1] || null;
 if (!url) {
@@ -11,8 +11,21 @@ if (!url) {
     shadow.exit(1);
 }
 
+let pageOptions = {
+    startTimeout: 15000,
+    loadTimeout: 50000,
+    loadWait: 1200
+};
+
+let collectOptions = {
+    captureTypes: [
+        /^text\/css/,
+        /^(application|text)\/(x-)?javascript/
+    ]
+};
+
 const run = function(page, url, runOptions, testIDs) {
-    let har = harLib.init(page);
+    let collector = harCollector(page, collectOptions);
     let runner;
 
     return page.open(url)
@@ -24,7 +37,7 @@ const run = function(page, url, runOptions, testIDs) {
         runner = testRunner.create({
             sandbox: page.sandbox.sandbox,
             plainText: page.plainText,
-            har: har,
+            har: collector.data,
             extractObjects: true,
             runOptions: runOptions
         });
@@ -43,15 +56,7 @@ const run = function(page, url, runOptions, testIDs) {
     });
 };
 
-let p = webpage.create({
-    startTimeout: 10000,
-    loadTimeout: 30000,
-    loadWait: 1000,
-    captureTypes: [
-        /^text\/css/,
-        /^(application|text)\/(x-)?javascript/,
-    ]
-});
+let p = webpage.create(pageOptions);
 
 run(p, url, {
     debug_validator: false,
