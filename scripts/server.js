@@ -179,6 +179,9 @@ server.registerPath("/dump", function(request, response) {
     let testIDs = (request.get.tests || "").split(",").filter(function(v) {
         return v;
     });
+    let w = parseInt(request.get.w) || 400;
+    let h = parseInt(request.get.h) || 400;
+
     let content = {};
     let runner;
     let testStart;
@@ -219,7 +222,7 @@ server.registerPath("/dump", function(request, response) {
         });
 
         // Make screenshot (async)
-        return utils.makeScreenshot(page, 300, 200, true);
+        return utils.makeScreenshot(page, w, h, true);
     })
     .then(function(render) {
         content.screenshot = render;
