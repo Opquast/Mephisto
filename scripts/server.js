@@ -32,6 +32,8 @@ preferences.set("browser.chrome.favicons", false);
 preferences.set("browser.chrome.site_icons", false);
 preferences.set("network.prefetch-next", false);
 
+preferences.set("extensions.sdk.console.logLevel", "all");
+
 
 console.log("Starting", shadow.extensionName, shadow.extensionVersion, "/", shadow.appName, shadow.appVersion);
 
