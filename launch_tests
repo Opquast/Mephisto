@@ -1,0 +1,38 @@
+#!/bin/bash
+
+CMD=""
+
+if [ $# -ge 1 ]; then
+    CMD=${1}
+else
+    CMD=`which cfx`
+fi
+
+if [ $# -ge 2 ]; then
+    CMD="${CMD} -b ${2}"
+fi
+
+if [ $# -ge 3 ]; then
+    CMD="${CMD} --binary-args=\"--display=${3}\""
+fi
+
+CMD="${CMD} test"
+RESULT=0
+
+launch_tests() {
+    echo "+++ Testing $(basename ${1})"
+    (cd ${1} && ${CMD})
+
+    res=$?
+    if [ ${res} -ne 0 ]; then
+        RESULT=${res}
+    fi
+    echo
+}
+
+launch_tests "extension/packages/shadowjs/packages/jetpack-container"
+launch_tests "extension/packages/shadowjs/packages/jetpack-webpage/packages/jetpack-net-log"
+#launch_tests "extension/packages/shadowjs/packages/jetpack-webpage"
+launch_tests "extension/packages/shadowjs/packages/jetpack-webserver"
+
+exit ${RESULT}
