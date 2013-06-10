@@ -1,8 +1,10 @@
 "use strict";
 
 const shadow = require("shadow/main");
+const {prefs} = require("sdk/simple-prefs");
 
 exports.main = function(loadReason, staticArgs) {
+    prefs['sdk.console.logLevel'] = "debug";
     let options = {
         getModuleOverrides: function(modules) {
             modules["base64"] = require("sdk/base64");
