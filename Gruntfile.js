@@ -13,10 +13,12 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask("mephisto", "Launch Mephisto with script", function(script, args) {
+    var mephistoTask = function(script, args, cfxOptions) {
         if (!script) {
             grunt.fatal("Usage: grunt mephisto:path-to-script");
         }
+
+        cfxOptions = cfxOptions && cfxOptions.split(/\s+/) || [];
 
         var script = path.join(process.cwd(), script);
         if(!grunt.file.exists(script)) {
@@ -38,7 +40,7 @@ module.exports = function(grunt) {
 
         var ps = grunt.util.spawn({
             cmd: "cfx",
-            args: ["run"],
+            args: ["run"].concat(cfxOptions),
             opts: {
                 cwd: "extension",
                 env: env
@@ -53,7 +55,13 @@ module.exports = function(grunt) {
         ps.stderr.on("data", function(data) {
             console.error(data.toString().replace(/\n$/, ""));
         });
+    };
+
+    grunt.registerTask("mephisto", "Launch Mephisto with script", function(script, args, cfxOptions) {
+        return mephistoTask.bind(this)(script, args, cfxOptions)
     });
 
-    grunt.registerTask("runserver", ["mephisto:scripts/server.js:9000"]);
+    grunt.registerTask("runserver", "Start Server", function(cfxOptions) {
+        return mephistoTask.bind(this)("scripts/server.js", ["9000"], cfxOptions)
+    });
 };
