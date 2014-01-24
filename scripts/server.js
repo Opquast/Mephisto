@@ -246,7 +246,6 @@ server.registerPath("/dump", function(request, response) {
             v.details = v.details.map(function(d) {
                 if (typeof(d.selector) !== "undefined") {
                     delete(d.selector);
-                    delete(d.text);
                 }
                 return d;
             });
